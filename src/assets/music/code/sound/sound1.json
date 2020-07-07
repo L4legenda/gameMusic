@@ -1,0 +1,18 @@
+{
+	"name" : "niletto-lyubimka.mp3",
+	"maxTime" : "3:39",
+	"timelist": [
+		{
+			"time" : "0:2",
+			"text" : "бла бла"
+		},
+		{
+			"time" : "0:3",
+			"text" : "бла бла"
+		},
+		{
+			"time" : "0:3",
+			"text" : "бла бла"
+		}
+	]
+}
