@@ -93,48 +93,112 @@ export default {
       let step = (window.innerHeight - ( this.margin * 2 ) - (this.hero.height * 2) ) / 10;
 
       for( let item of Block ){
-        ctx.fillStyle = '#785d43';
-        let pos = this.converToTik(item.time);
-        // console.log("pos: " + pos + " voice: " + this.positionMove + " itogo: " + (this.positionMove + pos));
-        ctx.fillRect(
-          this.positionMove + pos + this.centerWidth() - 200,
-          window.innerHeight - this.margin - (step * item.block), 
-          150,
-          window.innerHeight - ((this.margin * 2) + (this.hero.height * 2)) + sizeLine + 1 );
+        if(item.block < 0){
+          ctx.fillStyle = '#785d43';
 
-        ctx.fillStyle = '#d1c958';
+          let posX = this.converToTik(item.time);
+          posX = this.positionMove + posX + this.centerWidth() - 200;
 
-        ctx.fillRect(
-          this.positionMove + pos + this.centerWidth() - 200,
-          window.innerHeight - this.margin - (step * item.block), 
-          150,
-          sizeLine );
-      ctx.fillRect(
-          this.positionMove + pos + this.centerWidth() - 200,
-          window.innerHeight - this.margin - (step * item.block),
-          sizeLine,
-          (step * item.block) + sizeLine);
-      ctx.fillRect(
-          this.positionMove + pos + this.centerWidth() - 200 + 150,
-          window.innerHeight - this.margin - (step * item.block),
-          sizeLine,
-          (step * item.block) + sizeLine );
+          let posY = this.margin - sizeLine - 1;
 
-      //Коллизия
-      const b = {
-        top : window.innerHeight - this.margin - (step * item.block),
-        left : this.positionMove + pos + this.centerWidth() - 200,
-        right: this.positionMove + pos + this.centerWidth() - 200 + 150
-      }
+          ctx.fillRect(
+            posX,
+            posY, 
+            150,
+            (step * item.block) * -1
+            );
 
-      if(
-          this.centerWidth() - 200 + 64 > b.left &&
-          this.centerWidth() - 200 < b.right &&
-          this.posY + 64 > b.top
-        ){
-        clearInterval(this.interval);
-        this.$router.push('/end');
-      }
+          ctx.fillStyle = '#d1c958';
+           
+          ctx.fillRect(
+            posX,
+            posY - (step * item.block) - sizeLine, 
+            150,
+            sizeLine 
+          );
+          
+          ctx.fillRect(
+              posX,
+              posY + 1,
+              sizeLine,
+              ((step * item.block) + sizeLine) * -1
+            );
+            
+          ctx.fillRect(
+              posX + 150 - sizeLine,
+              posY + 1,
+              sizeLine,
+              ((step * item.block) + + sizeLine) * -1
+          );
+          
+          //Коллизия
+          const b = {
+            bottom : posY + ((step * item.block) * -1),
+            left : posX,
+            right: posX + 150
+          }
+
+          if(
+              this.centerWidth() - 200 + 64 > b.left &&
+              this.centerWidth() - 200 < b.right &&
+              this.posY  < b.bottom
+            ){
+            clearInterval(this.interval);
+            this.$router.push('/end');
+          }
+        }else if(item.block > 0){
+          ctx.fillStyle = '#785d43';
+
+          let posX = this.converToTik(item.time);
+          posX = this.positionMove + posX + this.centerWidth() - 200;
+
+          let posY = window.innerHeight - this.margin - (step * item.block);
+
+          ctx.fillRect(
+            posX,
+            posY, 
+            150,
+            window.innerHeight - ((this.margin * 2) + (this.hero.height * 2)) + sizeLine + 1 
+            );
+
+          ctx.fillStyle = '#d1c958';
+
+          ctx.fillRect(
+            posX,
+            posY, 
+            150,
+            sizeLine 
+          );
+          ctx.fillRect(
+              posX,
+              posY,
+              sizeLine,
+              (step * item.block) + sizeLine
+            );
+          ctx.fillRect(
+              posX + 150,
+              posY,
+              sizeLine,
+              (step * item.block) + sizeLine 
+            );
+
+          //Коллизия
+          const b = {
+            top : posY,
+            left : posX,
+            right: posX + 150
+          }
+
+          if(
+              this.centerWidth() - 200 + 64 > b.left &&
+              this.centerWidth() - 200 < b.right &&
+              this.posY + 64 > b.top
+            ){
+            clearInterval(this.interval);
+            this.$router.push('/end');
+          }
+        }
+        
 
       }
 
